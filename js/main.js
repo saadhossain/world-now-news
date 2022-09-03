@@ -58,10 +58,10 @@ const displayNews = (allNews) => {
     allNews.forEach(news => {
         //Single news
         const newsSingle =  document.createElement('div');
-        newsSingle.classList.add('card', 'card-side', 'bg-base-100', 'shadow-xl', 'mb-5');
+        newsSingle.classList.add('card', 'md:card-side', 'bg-base-100', 'shadow-xl', 'mb-5');
         newsSingle.innerHTML = `
-        <figure><label class="cursor-pointer" for="news-modal" onclick="loadDetails('${news._id}')"><img src="${news.thumbnail_url}" class="h-64"></label></figure>
-        <div class="w-3/4 card-body">
+        <figure><label class="w-full cursor-pointer" for="news-modal" onclick="loadDetails('${news._id}')"><img src="${news.thumbnail_url}" class="h-72 md:h-64 w-full"></label></figure>
+        <div class="card-body w-full md:w-3/4 p-3 md:p-5">
             <label class="card-title cursor-pointer" for="news-modal" onclick="loadDetails('${news._id}')">${news.title}</label>
             <p>${news.details.length > 300 ? news.details.slice(0, 300) + '...' : news.details}</p>
             <!-------------Post Details--------------------->
