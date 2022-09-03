@@ -10,15 +10,23 @@ const loadCategory = async() =>{
     }
 }
 const displayCategory = (categories) => {
-    const newsCategory = document.getElementById('category-container');
+    const newsCategoryPc = document.getElementById('category-container-pc');
+    const newsCategoryMobile = document.getElementById('category-container-mobile');
     categories.forEach(category => {
         const categoryLi = document.createElement('li');
+        categoryLi.setAttribute('active');
         categoryLi.innerHTML = `
             <a href="#" id="category-name" onclick="loadNews('${category.category_id}')">${category.category_name}</a>
         `
-        newsCategory.appendChild(categoryLi);
+        const categoryLiMobile = document.createElement('li');
+        categoryLiMobile.innerHTML = `
+            <a href="#" id="category-name" onclick="loadNews('${category.category_id}')">${category.category_name}</a>
+        `
+        newsCategoryPc.appendChild(categoryLi);
+        newsCategoryMobile.appendChild(categoryLiMobile);
     });
 }
+
 
 loadCategory()
 //Load News from Category
@@ -60,10 +68,11 @@ const displayNews = (allNews) => {
         const newsSingle =  document.createElement('div');
         newsSingle.classList.add('card', 'md:card-side', 'bg-base-100', 'shadow-xl', 'mb-5');
         newsSingle.innerHTML = `
-        <figure><label class="w-full cursor-pointer" for="news-modal" onclick="loadDetails('${news._id}')"><img src="${news.thumbnail_url}" class="h-72 md:h-64 w-full"></label></figure>
+        <figure><label class="w-full cursor-pointer" for="news-modal" onclick="loadDetails('${news._id}')"><img src="${news.thumbnail_url}" class="h-64 w-full"></label></figure>
         <div class="card-body w-full md:w-3/4 p-3 md:p-5">
             <label class="card-title cursor-pointer" for="news-modal" onclick="loadDetails('${news._id}')">${news.title}</label>
-            <p>${news.details.length > 300 ? news.details.slice(0, 300) + '...' : news.details}</p>
+            <p class="hidden md:block">${news.details.length > 300 ? news.details.slice(0, 300) + '...' : news.details}</p>
+            <p class="block md:hidden">${news.details.length > 200 ? news.details.slice(0, 200) + '...' : news.details}</p>
             <!-------------Post Details--------------------->
             <div class="flex justify-between">
                 <div class="flex items-center gap-3">
@@ -82,7 +91,8 @@ const displayNews = (allNews) => {
             </div>
         </div>
         `
-        newsContainer.appendChild(newsSingle); 
+        newsContainer.appendChild(newsSingle);
+        //Stop the spinner after append the news
         spinner.classList.add('hidden');
         
     });
