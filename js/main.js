@@ -14,7 +14,6 @@ const displayCategory = (categories) => {
     const newsCategoryMobile = document.getElementById('category-container-mobile');
     categories.forEach(category => {
         const categoryLi = document.createElement('li');
-        categoryLi.setAttribute('active');
         categoryLi.innerHTML = `
             <a href="#" id="category-name" onclick="loadNews('${category.category_id}')">${category.category_name}</a>
         `
