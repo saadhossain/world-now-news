@@ -60,9 +60,9 @@ const displayNews = (allNews) => {
         const newsSingle =  document.createElement('div');
         newsSingle.classList.add('card', 'card-side', 'bg-base-100', 'shadow-xl', 'mb-5');
         newsSingle.innerHTML = `
-        <figure class="w-1/4"><img src="${news.thumbnail_url}" class="h-64"></figure>
+        <figure><label class="cursor-pointer" for="news-modal" onclick="loadDetails('${news._id}')"><img src="${news.thumbnail_url}" class="h-64"></label></figure>
         <div class="w-3/4 card-body">
-            <h2 class="card-title">${news.title}</h2>
+            <label class="card-title cursor-pointer" for="news-modal" onclick="loadDetails('${news._id}')">${news.title}</label>
             <p>${news.details.length > 300 ? news.details.slice(0, 300) + '...' : news.details}</p>
             <!-------------Post Details--------------------->
             <div class="flex justify-between">
@@ -74,10 +74,10 @@ const displayNews = (allNews) => {
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-2xl"><span><i class="fa-solid fa-eye"></i></span> ${news.total_view ? news.total_view: 'Not Found'}</h3>
+                    <h3 class="text-xl"><span><i class="fa-solid fa-eye"></i></span> ${news.total_view ? news.total_view: 'Unavailable'}</h3>
                 </div>
                 <div>
-                    <label for="news-modal" class="modal-button cursor-pointer" onclick="loadDetails('${news._id}')"><span class="text-2xl"><i class="fa-solid fa-right-long"></i></span></label>
+                    <label for="news-modal" class="cursor-pointer" onclick="loadDetails('${news._id}')"><span class="text-xl text-violet-500"><i class="fa-solid fa-right-long"></i></span></label>
                 </div>
             </div>
         </div>
