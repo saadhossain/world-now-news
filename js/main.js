@@ -9,7 +9,7 @@ const displayCategory = (categories) => {
     categories.forEach(category => {
         const categoryLi = document.createElement('li');
         categoryLi.innerHTML = `
-            <a href="#" onclick="loadNews('${category.category_id}')">${category.category_name}</a>
+            <a href="#" id="category-name" onclick="loadNews('${category.category_id}')">${category.category_name}</a>
         `
         newsCategory.appendChild(categoryLi);
     });
@@ -30,12 +30,20 @@ const displayNews = (allNews) => {
     //News Count
     const newsCount = document.getElementById('found-item');
     newsCount.innerText = '';
+    //Show How many news found in which category
+    if(newsLength > 0){
+        newsCount.innerText = newsLength;
+    }
+    else{
+        newsCount.innerText = 'No';
+    }
+    //Show category in found line
+
+
+    //Get the News Container
     const newsContainer = document.getElementById('news-container');
     newsContainer.innerHTML = '';
     allNews.forEach(news => {
-        newsCount.innerText = newsLength;
-        //Show category in found line
-        document.getElementById('found-category').innerText = '';
         //Single news
         const newsSingle =  document.createElement('div');
         newsSingle.classList.add('card', 'card-side', 'bg-base-100', 'shadow-xl', 'mb-5');
