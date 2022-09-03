@@ -67,7 +67,7 @@ const displayNews = (allNews) => {
     const newsContainer = document.getElementById('news-container');
     newsContainer.innerHTML = '';
     //Sorting the News by Total Views from Low to high
-    allNews.sort((a ,b ) => a.total_view - b.total_view);
+    allNews.sort((a ,b ) => b.total_view - a.total_view);
     allNews.forEach(news => {
         //Single news
         const newsSingle =  document.createElement('div');
