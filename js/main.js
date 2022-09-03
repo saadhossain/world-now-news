@@ -5,7 +5,6 @@ const loadCategory = async() =>{
     displayCategory(data.data.news_category)
 }
 const displayCategory = (categories) => {
-    console.log(categories);
     const newsCategory = document.getElementById('category-container');
     categories.forEach(category => {
         const categoryLi = document.createElement('li');
@@ -19,46 +18,80 @@ const displayCategory = (categories) => {
 loadCategory()
 //Load News from Category
 const loadNews = async (newsCat) => {
-    console.log(newsCat);
     const url = `https://openapi.programming-hero.com/api/news/category/${newsCat}`;
     const res = await fetch (url);
     const data = await res.json();
-    displayNews(data.data)
+    displayNews(data.data);
 }
 //Display News from the Category
 const displayNews = (allNews) => {
+    //News lenth in every category
+    const newsLength = allNews.length;
+    //News Count
+    const newsCount = document.getElementById('found-item');
+    newsCount.innerText = '';
     const newsContainer = document.getElementById('news-container');
     newsContainer.innerHTML = '';
-    // console.log(allNews);
     allNews.forEach(news => {
-        console.log(news);
+        newsCount.innerText = newsLength;
+        //Show category in found line
+        document.getElementById('found-category').innerText = '';
+        //Single news
         const newsSingle =  document.createElement('div');
         newsSingle.classList.add('card', 'card-side', 'bg-base-100', 'shadow-xl', 'mb-5');
-
         newsSingle.innerHTML = `
-        <figure class="w-1/4"><img src="${news.thumbnail_url}" class="h-50"></figure>
+        <figure class="w-1/4"><img src="${news.thumbnail_url}" class="h-64"></figure>
         <div class="w-3/4 card-body">
             <h2 class="card-title">${news.title}</h2>
-            <p>${news.details.slice(0, 300) + '...'}</p>
+            <p>${news.details.length > 300 ? news.details.slice(0, 300) + '...' : news.details}</p>
             <!-------------Post Details--------------------->
             <div class="flex justify-between">
                 <div class="flex items-center gap-3">
                     <img src="${news.author.img}" class="h-10 rounded-full" />
                     <div>
-                        <h4 class="text-lg font-semibold">${news.author.name}</h4>
-                        <h5>${news.author.published_date}</h5>
+                        <h4 class="text-lg font-semibold">${news.author.name ? news.author.name : 'Anonymous'}</h4>
+                        <h5>${news.author.published_date ? news.author.published_date: 'Not Found'}</h5>
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-2xl"><span><i class="fa-solid fa-eye"></i></span> ${news.total_view}</h3>
+                    <h3 class="text-2xl"><span><i class="fa-solid fa-eye"></i></span> ${news.total_view ? news.total_view: 'Not Found'}</h3>
                 </div>
                 <div>
-                    <a href=""><span class="text-2xl"><i class="fa-solid fa-right-long"></i></span></a>
+                    <label for="news-modal" class="modal-button cursor-pointer" onclick="loadDetails('${news._id}')"><span class="text-2xl"><i class="fa-solid fa-right-long"></i></span></label>
                 </div>
             </div>
         </div>
         `
-        newsContainer.appendChild(newsSingle);
+        newsContainer.appendChild(newsSingle);  
     });
                     
 }
+const loadDetails = async(newsID) => {
+    const url = `https://openapi.programming-hero.com/api/news/${newsID}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    displayNewsDetails(data.data[0]);
+}
+
+const displayNewsDetails = (newsDetails) => {
+    const newsModal = document.getElementById('modal');
+    const { title, details, image_url} = newsDetails;
+    newsModal.innerHTML = `
+        <div class="modal-box">
+            <h3 class="font-bold text-lg mb-3">${title}</h3>
+            <img src="${image_url}"/>
+            <p class="py-4">${details}</p>
+            <div class="flex items-center gap-3">
+                <img src="${newsDetails.author.img}" class="h-10 rounded-full" />
+                <div>
+                    <h4 class="text-lg font-semibold">${newsDetails.author.name ? newsDetails.author.name : 'Anonymous'}</h4>
+                    <h5>${newsDetails.author.published_date ? newsDetails.author.published_date: 'Not Found'}</h5>
+                </div>
+            </div>
+            <div class="modal-action">
+                <label for="news-modal" class="btn">Close!</label>
+            </div>
+        </div>
+    `
+}
+
