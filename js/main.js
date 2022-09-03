@@ -1,8 +1,13 @@
 const loadCategory = async() =>{
     const url = 'https://openapi.programming-hero.com/api/news/categories';
-    const res = await fetch(url);
-    const data = await res.json();
-    displayCategory(data.data.news_category)
+    try{
+        const res = await fetch(url);
+        const data = await res.json();
+        displayCategory(data.data.news_category);
+    }
+    catch (error){
+        console.log(error);
+    }
 }
 const displayCategory = (categories) => {
     const newsCategory = document.getElementById('category-container');
@@ -19,9 +24,14 @@ loadCategory()
 //Load News from Category
 const loadNews = async (newsCat) => {
     const url = `https://openapi.programming-hero.com/api/news/category/${newsCat}`;
-    const res = await fetch (url);
-    const data = await res.json();
-    displayNews(data.data);
+    try{
+        const res = await fetch (url);
+        const data = await res.json();
+        displayNews(data.data);
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 //Display News from the Category
 const displayNews = (allNews) => {
@@ -36,9 +46,11 @@ const displayNews = (allNews) => {
     }
     else{
         newsCount.innerText = 'No';
+        spinner.classList.add('hidden');
     }
-    //Show category in found line
-
+    //Show Spinner While loading news
+    const spinner = document.getElementById('spinner');
+    spinner.classList.remove('hidden');
 
     //Get the News Container
     const newsContainer = document.getElementById('news-container');
@@ -70,7 +82,9 @@ const displayNews = (allNews) => {
             </div>
         </div>
         `
-        newsContainer.appendChild(newsSingle);  
+        newsContainer.appendChild(newsSingle); 
+        spinner.classList.add('hidden');
+        
     });
                     
 }
